@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        #qrcode {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        @media (max-width: 768px) {
+            input {
+                width: 100%;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <input type="text" id="link" placeholder="Enter URL here...">
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <button onclick="downloadQRCode()">Download QR Code</button>
+    <br>
+    <div id="qrcode"></div>
+    
+    <script>
+        function generateQRCode() {
+            let link = document.getElementById("link").value;
+            if (link.trim() === "") {
+                alert("Please enter a valid URL");
+                return;
+            }
+            document.getElementById("qrcode").innerHTML = ""; 
+            new QRCode(document.getElementById("qrcode"), {
+                text: link,
+                width: 200,
+                height: 200
+            });
+        }
+
+        function downloadQRCode() {
+            let qrCanvas = document.querySelector("#qrcode canvas");
+            if (!qrCanvas) {
+                alert("Generate a QR code first!");
+                return;
+            }
+            let qrImage = qrCanvas.toDataURL("image/png");
+            let link = document.createElement("a");
+            link.href = qrImage;
+            link.download = "qrcode.png";
+            link.click();
+        }
+    </script>
+</body>
+</html>
